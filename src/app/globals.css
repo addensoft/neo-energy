@@ -1,26 +1,111 @@
 @import "tailwindcss";
 
+/**
+ * Design tokens — Creative Direction §6 (Typography), §7 (Color), §12 (Layout).
+ *
+ * Two layers, deliberately kept separate:
+ *  1. Raw brand palette (--palette-*)  — the literal values from the approved doc.
+ *  2. Semantic aliases (--background, --foreground, --muted, --border, ...)
+ *     — what components actually consume, so a future palette adjustment (e.g.
+ *     confirming exact Ion Blue stops against the vector logo, per CD §15) means
+ *     editing values in one place, not hunting through every component.
+ *
+ * Dark is the only mode — Creative Direction §7: "Default mode is dark throughout
+ * the cinematic chapters — this is non-negotiable... never the homepage." There is
+ * no light-mode variant here on purpose.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+
+  /* 1. Raw brand palette */
+  --palette-void: #05070a;
+  --palette-navy: #1c4669;
+  --palette-graphite: #12161c;
+  --palette-graphite-light: #1a1f27;
+  --palette-ion: #2e8fff;
+  --palette-ion-light: #5ac8ff;
+  --palette-white: #ffffff;
+  --palette-aluminium: #b8bec7;
+  --palette-copper: #b9713d;
+  --palette-certified: #3ecf8e;
+
+  /* 2. Semantic aliases */
+  --background: var(--palette-void);
+  --foreground: var(--palette-white);
+  --muted: var(--palette-aluminium);
+  --border: color-mix(in srgb, var(--palette-white) 12%, transparent);
+  --graphite: var(--palette-graphite);
+  --graphite-light: var(--palette-graphite-light);
+  --navy: var(--palette-navy);
+  --ion: var(--palette-ion);
+  --ion-light: var(--palette-ion-light);
+  --copper: var(--palette-copper);
+  --certified: var(--palette-certified);
 }
 
 @theme inline {
+  /* Typography — §6. Raw font variables are set on <html> in layout.tsx (see lib/fonts.ts). */
+  --font-display: var(--font-geist-display);
+  --font-mono: var(--font-geist-mono);
+  --font-body: var(--font-inter-body);
+
+  /* Color — §7 */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-graphite: var(--graphite);
+  --color-graphite-light: var(--graphite-light);
+  --color-navy: var(--navy);
+  --color-void: var(--palette-void);
+  --color-ion: var(--ion);
+  --color-ion-light: var(--ion-light);
+  --color-white: var(--palette-white);
+  --color-aluminium: var(--palette-aluminium);
+  --color-copper: var(--copper);
+  --color-certified: var(--certified);
+
+  /* Spacing — §12: 24px mobile / 96px desktop container gutters, 8-region section rhythm */
+  --spacing-gutter: 1.5rem;
+  --spacing-gutter-lg: 6rem;
+  --spacing-section: 8rem;
+  --spacing-section-sm: 4rem;
+
+  /* Radius — restrained/"engineered" precision rather than soft, bubbly corners */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
+
+  /* Shadows — dark-UI elevation plus the one reusable accent glow */
+  --shadow-elevation-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-elevation-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-elevation-lg: 0 24px 64px rgba(0, 0, 0, 0.6);
+  --shadow-ion-glow: 0 0 32px rgba(46, 143, 255, 0.35);
+
+  /* Easing — §4. Duration tokens live in lib/motion-tokens.ts for GSAP/Framer consumption. */
+  --ease-engineered: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Breakpoints — extends the default scale for ultrawide displays (§12). */
+  --breakpoint-3xl: 120rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--color-border);
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
 }
