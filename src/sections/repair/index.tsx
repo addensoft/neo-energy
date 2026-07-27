@@ -53,7 +53,14 @@ const CAPABILITIES = [
  */
 export function Repair() {
   return (
-    <Section id="repair" className="bg-void">
+    <Section id="repair" className="bg-void relative py-24 lg:py-32">
+      {/* Ambient blue lighting — same treatment (opacity/blur) as every other
+          full section, so the light reads as one consistent environment. */}
+      <div
+        aria-hidden="true"
+        className="bg-ion/15 pointer-events-none absolute top-1/2 left-1/2 h-[36rem] w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[140px]"
+      />
+
       <RevealWrapper
         variant="fade"
         duration={1.2}
@@ -64,34 +71,34 @@ export function Repair() {
         </div>
       </RevealWrapper>
 
-      <Container className="relative z-10 flex flex-col items-center gap-16 py-24 text-center">
+      <Container className="relative z-10 flex flex-col items-center gap-16 text-center">
         <div className="flex flex-col items-center gap-4">
           <RevealWrapper variant="fade">
-            <span className="text-ion font-mono text-xs tracking-[0.16em] uppercase">
+            <span className="text-ion text-label-sm font-mono">
               Component-Level Repair
             </span>
           </RevealWrapper>
           <RevealWrapper variant="blur" delay={0.1} duration={1}>
-            <Heading as="h2" size="xl" className="max-w-4xl uppercase">
+            <Heading as="h2" size="h2" className="max-w-4xl uppercase">
               Most Workshops Swap the Pack. We Repair the Component.
             </Heading>
           </RevealWrapper>
           <RevealWrapper variant="fade" delay={0.3}>
-            <Paragraph size="lead" className="max-w-xl text-balance">
+            <Paragraph size="body" className="max-w-xl text-balance">
               From cell to busbar to BMS — Singapore&apos;s only authorised team certified
               to go this deep.
             </Paragraph>
           </RevealWrapper>
         </div>
 
-        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid w-full grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-5 lg:gap-8">
           {CAPABILITIES.map((capability, index) => (
             <CapabilityCard
               key={capability.title}
               icon={capability.icon}
               title={capability.title}
               description={capability.description}
-              delay={index * 0.08}
+              delay={index * 0.1}
             />
           ))}
         </div>

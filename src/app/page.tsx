@@ -1,29 +1,31 @@
 import {
   Authority,
   CTA,
-  ExplodedView,
+  FlagshipBattery,
   Hero,
-  Industries,
   Repair,
-  TheObject,
+  TrustBar,
   WhyChooseUs,
 } from "@/sections";
 
 /**
  * Homepage — locked content order (see `lib/site-config.ts`'s `chapters` registry):
- * Hero → The Object → Engineering Battery Overview → Component-Level Repair →
- * Industries We Serve → Why Choose NEO Energy → Trust & Key Statistics → Final CTA.
- * Navbar/Footer are rendered once in the root layout, not per-page, since
- * they're global chrome rather than homepage chapters.
+ * Hero → Trust & Technology Bar → Flagship Battery Overview → Component-Level
+ * Repair → Why Choose NEO Energy → Trust & Key Statistics → Final CTA. The
+ * Object, Exploded View, and Industries are on hold (Flagship Battery
+ * Overview now covers The Object/Exploded View's ground; Industries/"For
+ * Business" was pulled, nav item and section both, per direct instruction)
+ * — see `lib/site-config.ts`. Navbar/Footer are rendered once in the root
+ * layout, not per-page, since they're global chrome rather than homepage
+ * chapters.
  */
 export default function Home() {
   return (
     <>
       <Hero />
-      <TheObject />
-      <ExplodedView />
+      <TrustBar />
+      <FlagshipBattery />
       <Repair />
-      <Industries />
       <WhyChooseUs />
       <Authority />
       <CTA />

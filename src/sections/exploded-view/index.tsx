@@ -93,10 +93,10 @@ const HEADER = (
     <span className="text-ion font-mono text-xs tracking-[0.16em] uppercase">
       The Pack
     </span>
-    <Heading as="h2" size="lg" className="max-w-3xl uppercase">
+    <Heading as="h2" size="h2" className="max-w-3xl uppercase">
       One Pack. Twenty-Two Mounting Points. Zero Compromise.
     </Heading>
-    <Paragraph size="sm" className="max-w-md text-balance">
+    <Paragraph size="body" className="max-w-md text-balance">
       The same flagship pack from the opening film, opened layer by layer.
     </Paragraph>
   </>

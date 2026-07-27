@@ -33,8 +33,14 @@ export function CapabilityCard({
     if (!el) return;
     gsap.fromTo(
       el,
-      { xPercent: -140, autoAlpha: 0.6 },
-      { xPercent: 140, autoAlpha: 0, duration: 0.9, ease: "power2.out", overwrite: true },
+      { xPercent: -140, autoAlpha: 0.4 },
+      {
+        xPercent: 140,
+        autoAlpha: 0,
+        duration: 0.85,
+        ease: "power2.out",
+        overwrite: true,
+      },
     );
   };
 
@@ -42,7 +48,7 @@ export function CapabilityCard({
     <RevealWrapper variant="blur" delay={delay} duration={0.7}>
       <div
         onPointerEnter={handlePointerEnter}
-        className="group border-border bg-graphite/60 hover:border-ion/50 ease-engineered relative flex h-full flex-col gap-4 overflow-hidden rounded-md border p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-ion-glow)]"
+        className="group border-border bg-graphite/60 hover:border-ion/50 ease-engineered relative flex h-full flex-col gap-5 overflow-hidden rounded-md border p-7 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-ion-glow)]"
       >
         <div
           ref={sweepRef}
@@ -55,11 +61,11 @@ export function CapabilityCard({
         />
 
         <Icon
-          className="text-ion ease-engineered h-6 w-6 transition-transform duration-300 group-hover:scale-110"
+          className="text-ion ease-engineered h-6 w-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-110"
           strokeWidth={1.5}
         />
-        <div className="flex flex-col gap-1.5">
-          <h3 className="font-display text-foreground text-base">{title}</h3>
+        <div className="flex flex-col gap-2">
+          <h4 className="font-display text-h4 text-foreground">{title}</h4>
           <p className="font-body text-muted text-sm leading-relaxed">{description}</p>
         </div>
       </div>
