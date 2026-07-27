@@ -1,8 +1,10 @@
 # NEO ENERGY — Powering the Future
 
-Marketing site for **NEO Energy Battery Services Pte. Ltd.**, Singapore's authorised EV
-battery engineering and component-level repair specialist. A cinematic, scroll-driven
-product-launch experience built around the flagship 77.9kWh battery pack.
+Marketing site for **NEO Energy Battery Services Pte. Ltd.**, Singapore's leading EV
+battery engineering and technology company — authorised partner across CATL, CALB, and
+BYD battery technologies, with component-level repair as one of several differentiators,
+not the brand's core identity. A cinematic, scroll-driven product-launch experience built
+around the flagship 77.9kWh battery pack.
 
 ## Tech stack
 
