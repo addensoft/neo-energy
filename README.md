@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NEO ENERGY — Powering the Future
 
-## Getting Started
+Marketing site for **NEO Energy Battery Services Pte. Ltd.**, Singapore's authorised EV
+battery engineering and component-level repair specialist. A cinematic, scroll-driven
+product-launch experience built around the flagship 77.9kWh battery pack.
 
-First, run the development server:
+## Tech stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+| Layer              | Choice                                                                   |
+| ------------------ | ------------------------------------------------------------------------- |
+| Framework          | [Next.js](https://nextjs.org) 15 (App Router, React 19)                   |
+| Language           | TypeScript (strict mode)                                                    |
+| Styling            | [Tailwind CSS v4](https://tailwindcss.com) (CSS-first `@theme` tokens)        |
+| Animation          | [GSAP](https://gsap.com) 3 + ScrollTrigger, [Framer Motion](https://www.framer.com/motion/) |
+| Smooth scroll      | [Lenis](https://lenis.darkroom.engineering)                                     |
+| Icons              | [lucide-react](https://lucide.dev)                                                |
+| Linting/formatting | ESLint 9 (flat config), Prettier + `prettier-plugin-tailwindcss`                    |
+
+## Folder structure
+
+```
+web/
+├── public/
+│   └── hero-frames/        # 289-frame WebP sequence powering the Hero scrub animation
+├── src/
+│   ├── app/                 # Next.js App Router: layout, page, metadata, sitemap/robots
+│   ├── components/
+│   │   ├── ui/               # Design-system primitives (Button, Heading, Container, Stat, …)
+│   │   ├── layout/             # Navbar, Footer
+│   │   ├── section/              # `Section` wrapper — reads the chapter registry
+│   │   ├── motion/                 # `RevealWrapper` scroll-reveal primitive
+│   │   ├── media/                    # Video wrapper
+│   │   ├── providers/                  # Smooth-scroll (Lenis) + hero-phase context providers
+│   │   └── battery/                      # Shared battery SVG glyph
+│   ├── sections/              # One folder/file per homepage chapter (see below)
+│   ├── hooks/                   # `use-reduced-motion`
+│   ├── lib/                       # `site-config` (nav/SEO/chapter registry), `gsap`, `fonts`, `utils`
+│   └── types/
+├── eslint.config.mjs
+├── next.config.ts
+└── tsconfig.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Homepage chapters
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The homepage is composed as a sequence of "chapters," ordered and labelled by the single
+source of truth at [`src/lib/site-config.ts`](src/lib/site-config.ts):
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Hero** — cinematic scroll-scrubbed video intro
+2. **The Object** — interactive battery pack reveal
+3. **Engineering Battery Overview** — scroll-exploded assembly view with real spec data
+4. **Component-Level Repair** — repair/maintenance capability grid
+5. **Industries We Serve** _(in progress)_
+6. **Why Choose NEO Energy** _(in progress)_
+7. **Trust & Key Statistics** _(in progress)_
+8. **Final Call to Action** _(in progress)_
 
-## Learn More
+`components/section/section.tsx` looks up each section's id in the `chapters` registry —
+adding a new chapter means registering it there before rendering it in
+[`src/app/page.tsx`](src/app/page.tsx).
 
-To learn more about Next.js, take a look at the following resources:
+## Getting started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Requirements:** Node.js 20+ and npm.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+The dev server is pinned to **http://localhost:4321** (see the `-p 4321` flag in
+`package.json` and `.claude/launch.json`) rather than the Next.js default of 3000.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Environment variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+None are required to run the project today — there is no `.env` file in this repository.
+`src/lib/site-config.ts` currently holds a **placeholder production URL**
+(`https://www.neoenergy.sg`) used for canonical links, Open Graph tags, and the sitemap;
+confirm the real domain before launch and update it there. If server-side integrations
+(forms, analytics, a CMS) are added later, document their required variables here and add
+an `.env.example` — real `.env*` files are git-ignored by default.
+
+## Development commands
+
+```bash
+npm run dev          # start the dev server on :4321
+npm run lint          # ESLint
+npm run lint:fix       # ESLint with autofix
+npm run typecheck       # tsc --noEmit
+npm run format            # Prettier — write
+npm run format:check       # Prettier — check only
+```
+
+## Build & production
+
+```bash
+npm run build   # production build
+npm run start    # serve the production build on :4321
+```
+
+## Deployment
+
+The app is a standard Next.js App Router project with no non-standard build steps or
+server requirements, so it deploys cleanly to [Vercel](https://vercel.com) (recommended,
+zero-config) or any Node.js host that can run `npm run build && npm run start`. There is
+no database or external API dependency at this stage.
+
+## License
+
+Proprietary and confidential. All rights reserved — © NEO Energy Battery Services Pte.
+Ltd. This source code is not licensed for reuse, redistribution, or modification outside
+of work authorised by NEO Energy Battery Services Pte. Ltd.
