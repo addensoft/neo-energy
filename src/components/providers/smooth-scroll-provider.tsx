@@ -36,9 +36,31 @@ export function SmoothScrollProvider({ children }: WithChildren) {
     gsap.ticker.add(syncLenisToGsapTicker);
     gsap.ticker.lagSmoothing(0);
 
+    // Both Lenis and every section's ScrollTrigger measure page/element
+    // positions once, at creation time. Async content that settles afterward
+    // — Hero's frame sequence preload, Flagship Battery's video, web fonts —
+    // can still shift layout, leaving those cached boundaries stale (the
+    // same root cause documented for an earlier Chapter 2 pin-registration
+    // bug in this project). A section whose trigger boundary lands past
+    // where it actually renders never fires its own reveal on a normal
+    // scroll-through — an anchor jump masks it because Lenis recalculates on
+    // its own `scrollTo`, but that's not how most visitors reach it. Re-measure
+    // both once the window has fully loaded, plus a couple of deferred passes
+    // to catch the slowest-settling content.
+    const refresh = () => {
+      lenis.resize();
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener("load", refresh);
+    const refreshTimeouts = [300, 1000, 2500].map((delay) =>
+      window.setTimeout(refresh, delay),
+    );
+
     return () => {
       lenis.destroy();
       gsap.ticker.remove(syncLenisToGsapTicker);
+      window.removeEventListener("load", refresh);
+      refreshTimeouts.forEach((id) => window.clearTimeout(id));
     };
   }, [prefersReducedMotion]);
 
