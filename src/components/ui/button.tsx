@@ -1,6 +1,10 @@
+"use client";
+
 import { cva, type VariantProps } from "class-variance-authority";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
+import { useRef } from "react";
 
+import { gsap } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 
 /**
@@ -11,24 +15,28 @@ import { cn } from "@/lib/utils";
  *
  * `ghost` exists for understated secondary actions (e.g. Chapter 8's "Talk to Our
  * Engineers") — it reads as a text affordance, not a competing button treatment,
- * so it doesn't violate the one-primary-style rule.
+ * so it deliberately stays free of the sweep/glow below rather than violating the
+ * one-primary-style rule by competing for attention.
  *
- * The magnetic hover interaction described in §4 is intentionally NOT implemented
- * yet — Sprint 1 is structure only. It hooks into this component in a later sprint
- * without changing the public API.
+ * Single premium hover language, applied here once so every call site inherits it
+ * for free: border + text shift to Ion Blue, a soft shared `--shadow-ion-glow`
+ * (same token `CapabilityCard` uses — one glow style site-wide), and a one-shot
+ * light sweep on pointer-enter (the same mechanic as `CapabilityCard`/`PartnerMark`).
+ * All on `EASE_ENGINEERED` timing via the shared `duration-300 ease-engineered`
+ * classes below.
  */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-sm font-mono text-xs uppercase tracking-[0.1em] transition-colors duration-300 ease-engineered focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ion disabled:pointer-events-none disabled:opacity-50",
+  "ease-engineered relative inline-flex items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-sm font-mono text-[0.9rem] font-semibold tracking-[0.08em] uppercase transition-[color,border-color,box-shadow] duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ion disabled:pointer-events-none disabled:opacity-50 lg:text-[0.95rem]",
   {
     variants: {
       variant: {
         primary:
-          "border border-border bg-graphite px-6 py-3 text-foreground hover:border-ion hover:text-ion",
-        ghost: "px-2 py-3 text-muted hover:text-foreground",
+          "border border-border bg-graphite px-8 py-4 text-foreground hover:border-ion hover:text-ion hover:shadow-[var(--shadow-ion-glow)]",
+        ghost: "px-2 py-3 text-muted transition-colors hover:text-foreground",
       },
       size: {
-        sm: "text-[11px]",
-        md: "text-xs",
+        sm: "px-5 py-2.5 text-[0.8rem] lg:text-[0.85rem]",
+        md: "",
       },
     },
     defaultVariants: {
@@ -63,17 +71,47 @@ type ButtonProps = ButtonAsButton | ButtonAsLink;
 // actual routed page.
 export function Button({ variant, size, className, children, ...props }: ButtonProps) {
   const classes = cn(buttonVariants({ variant, size }), className);
+  const sweepRef = useRef<HTMLSpanElement>(null);
+  const isPrimary = (variant ?? "primary") === "primary";
+
+  const handlePointerEnter = () => {
+    const el = sweepRef.current;
+    if (!el) return;
+    gsap.fromTo(
+      el,
+      { xPercent: -140, autoAlpha: 0.4 },
+      { xPercent: 140, autoAlpha: 0, duration: 0.8, ease: "power2.out", overwrite: true },
+    );
+  };
+
+  const sweep = isPrimary ? (
+    <span
+      ref={sweepRef}
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 opacity-0 [mix-blend-mode:screen]"
+      style={{
+        background:
+          "linear-gradient(75deg, transparent 40%, rgba(90,200,255,0.45) 50%, transparent 60%)",
+      }}
+    />
+  ) : null;
 
   if ("href" in props && props.href) {
     return (
-      <a className={classes} {...props}>
+      <a className={classes} onPointerEnter={handlePointerEnter} {...props}>
+        {sweep}
         {children}
       </a>
     );
   }
 
   return (
-    <button className={classes} {...(props as ButtonHTMLAttributes<HTMLButtonElement>)}>
+    <button
+      className={classes}
+      onPointerEnter={handlePointerEnter}
+      {...(props as ButtonHTMLAttributes<HTMLButtonElement>)}
+    >
+      {sweep}
       {children}
     </button>
   );

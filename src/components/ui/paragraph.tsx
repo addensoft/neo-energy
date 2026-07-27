@@ -5,21 +5,24 @@ import { cn } from "@/lib/utils";
 import type { PolymorphicProps } from "@/types";
 
 /**
- * Paragraph — the humanist body voice. Creative Direction §6 Typography System.
+ * Paragraph — the humanist body voice, driven by the site-wide typography
+ * system (globals.css `.text-body`: one size, one color, one max-width,
+ * everywhere — no per-section paragraph scales).
  *
- * "A neutral, highly legible sans... for paragraph copy, audience descriptions,
- * and UI labels — quiet and functional, never competing with the display face."
+ * `lead` is the one exception: Hero's subline is approved and frozen, so
+ * this variant's values are intentionally left exactly as they were rather
+ * than migrated to the new scale — it's the only thing still consuming it.
+ * Every other section uses `body`.
  */
-const paragraphVariants = cva("font-body text-muted", {
+const paragraphVariants = cva("font-body", {
   variants: {
     size: {
-      lead: "text-xl leading-relaxed lg:text-2xl",
-      base: "text-base leading-relaxed",
-      sm: "text-sm leading-relaxed",
+      lead: "text-muted text-xl leading-relaxed lg:text-2xl",
+      body: "text-body",
     },
   },
   defaultVariants: {
-    size: "base",
+    size: "body",
   },
 });
 

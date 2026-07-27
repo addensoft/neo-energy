@@ -1,3 +1,5 @@
+import type { Ref } from "react";
+
 import { chapters, type ChapterId } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import type { WithChildren, WithClassName } from "@/types";
@@ -18,10 +20,12 @@ import type { WithChildren, WithClassName } from "@/types";
 type SectionProps = WithChildren<
   WithClassName<{
     id: ChapterId;
+    /** React 19 accepts `ref` as a plain prop — no `forwardRef` needed. */
+    ref?: Ref<HTMLElement>;
   }>
 >;
 
-export function Section({ id, className, children }: SectionProps) {
+export function Section({ id, className, children, ref }: SectionProps) {
   const chapter = chapters.find((c) => c.id === id);
 
   if (!chapter) {
@@ -30,6 +34,7 @@ export function Section({ id, className, children }: SectionProps) {
 
   return (
     <section
+      ref={ref}
       id={id}
       aria-label={chapter.label}
       data-chapter-id={chapter.id}

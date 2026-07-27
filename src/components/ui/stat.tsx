@@ -21,12 +21,8 @@ type StatProps = WithClassName<{
 export function Stat({ value, label, className }: StatProps) {
   return (
     <div className={cn("flex flex-col gap-2", className)}>
-      <span className="text-foreground font-mono text-3xl tracking-tight lg:text-4xl">
-        {value}
-      </span>
-      <span className="text-muted font-mono text-xs tracking-[0.12em] uppercase">
-        {label}
-      </span>
+      <span className="text-spec-value font-mono">{value}</span>
+      <span className="text-label-sm font-mono">{label}</span>
     </div>
   );
 }

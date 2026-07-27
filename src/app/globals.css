@@ -80,7 +80,7 @@
   --shadow-elevation-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-elevation-md: 0 8px 24px rgba(0, 0, 0, 0.5);
   --shadow-elevation-lg: 0 24px 64px rgba(0, 0, 0, 0.6);
-  --shadow-ion-glow: 0 0 32px rgba(46, 143, 255, 0.35);
+  --shadow-ion-glow: 0 0 28px rgba(46, 143, 255, 0.26);
 
   /* Easing — §4. Duration tokens live in lib/motion-tokens.ts for GSAP/Framer consumption. */
   --ease-engineered: cubic-bezier(0.16, 1, 0.3, 1);
@@ -107,5 +107,152 @@
     html {
       scroll-behavior: smooth;
     }
+  }
+}
+
+/**
+ * Global typography system — one scale, applied everywhere. Mobile-first
+ * values below, overridden at `md` (tablet, 768px) and `lg` (desktop,
+ * 1024px) to match Tailwind's own breakpoints so these compose predictably
+ * with responsive utility classes passed in via `className`.
+ *
+ * `@layer components` (not `utilities`) on purpose: Tailwind's utilities
+ * layer always wins the cascade over components, so a per-instance utility
+ * class (e.g. `max-w-md`, `text-ion`) passed through a component's
+ * `className` prop correctly overrides these defaults without a specificity
+ * fight.
+ *
+ * Exception: Hero's headline/subline are frozen (approved, locked) and keep
+ * their own pre-existing sizing in `components/ui/heading.tsx`'s `hero`
+ * variant and `paragraph.tsx`'s `lead` variant — neither of those variants'
+ * values were touched here, specifically so Hero's rendered output doesn't
+ * shift. Every other section's heading/paragraph migrates to the classes
+ * below instead.
+ */
+@layer components {
+  /* H1 — reserved for a real future non-Hero H1; Hero itself keeps its own
+     frozen `hero` heading variant rather than this class. */
+  .text-h1 {
+    font-size: 2.75rem;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+  }
+  @media (min-width: 768px) {
+    .text-h1 {
+      font-size: 4rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .text-h1 {
+      font-size: clamp(4.5rem, 8vw, 8rem);
+    }
+  }
+
+  /* H2 — major section titles. Every section headline on the page.
+     ~30% down from the original scale (2rem/2.8rem/clamp to 4.5rem) — still
+     one consistent size everywhere, just less dominant against the visuals. */
+  .text-h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--color-white);
+  }
+  @media (min-width: 768px) {
+    .text-h2 {
+      font-size: 2rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .text-h2 {
+      font-size: clamp(2rem, 3.5vw, 3.15rem);
+    }
+  }
+
+  /* H3 — sub headings. */
+  .text-h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  @media (min-width: 768px) {
+    .text-h3 {
+      font-size: 1.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .text-h3 {
+      font-size: 1.75rem;
+    }
+  }
+
+  /* H4 — small card titles. */
+  .text-h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  @media (min-width: 768px) {
+    .text-h4 {
+      font-size: 1.15rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .text-h4 {
+      font-size: 1.25rem;
+    }
+  }
+
+  /* Body copy — every non-Hero paragraph. */
+  .text-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.75;
+    letter-spacing: 0;
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 600px;
+  }
+  @media (min-width: 768px) {
+    .text-body {
+      font-size: 0.95rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .text-body {
+      font-size: 1rem;
+    }
+  }
+
+  /* Specification labels — inline value+caption pairs, e.g. "77.94 kWh". */
+  .text-spec-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* Specification values — large standalone numbers, e.g. a stat bar.
+     ~20% down from the original scale (1.75rem/2.5rem) — gives dense
+     multi-column bars (Authority) room to breathe without wrapping. */
+  .text-spec-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-white);
+  }
+  @media (min-width: 1024px) {
+    .text-spec-value {
+      font-size: 2rem;
+    }
+  }
+
+  /* Small eyebrow/category labels, e.g. "Worldwide Authorized Agent". */
+  .text-label-sm {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.65;
   }
 }
